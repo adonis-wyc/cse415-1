@@ -1,6 +1,9 @@
 irregular = {
     'have': 'had',
     'be': 'was',
+    'am': 'was',
+    'is': 'was',
+    'are': 'were',
     'eat': 'ate',
     'go': 'went'
 }
@@ -41,13 +44,14 @@ def past_tense(n):
     return verbs
 
 def other_verbs(n):
-    if n[-1] == 'e':
-        return n + 'd'
-    elif n[-1] == 'y' and n[-2] not in 'aeiou':
-        return n[:-1] + 'ied'
-    elif n[-1] not in 'aeiouyw' and n[-2] in 'aeiou' and n[-3] not in 'aeiou':
-        return n + n[-1] + 'ed'
-    else:
-        return n + 'ed'
+    if (len(n) > 2):
+        if n[-1] == 'e':
+            return n + 'd'
+        elif n[-1] == 'y' and n[-2] not in 'aeiou':
+            return n[:-1] + 'ied'
+        elif n[-1] not in 'aeiouyw' and n[-2] in 'aeiou' and n[-3] not in 'aeiou':
+            return n + n[-1] + 'ed'
+        else:
+            return n + 'ed'
 
-print(past_tense(['program', 'debug', 'execute', 'crash', 'repeat', 'eat']))
+print(past_tense(['a']))
