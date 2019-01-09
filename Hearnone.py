@@ -1,8 +1,13 @@
+# Hearnone.py
+# A minimal agent that can be used for basic testing of a dialog
+# with another agent, using the dialog.py program.
+
 def introduce():
-    return 'I am boi'
+    return """I'm Hearnone, designed by S. Tanimoto.
+I don't pay much attention to what people say to me."""
 
 def agentName():
-    return ""
+    return "Hearnone"
 
 from random import choice
 
