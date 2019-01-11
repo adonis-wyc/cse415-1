@@ -12,15 +12,6 @@ def agentName():
 
 punctuation_pattern = compile(r"\,|\.|\?|\!|\;|\:")    
 
-EMOTIONS = {
-    1: 'happy',
-    2: 'sad',
-    3: 'angry',
-    4: 'mad',
-    5: 'anxious',
-    6: 'content'
-}
-
 def respond(the_input):
     wordlist = split(' ',remove_punctuation(the_input))
     wordlist[0]=wordlist[0].lower()
@@ -35,11 +26,13 @@ def respond(the_input):
         feeling = choice(['happy', 'sad', 'angry', 'mad', 'anxious', 'content'])
         return "I feel " + feeling + " right now."
     if wordlist[0:2] == ['i', 'will']:
-        return "Cool!  I hope you " + stringify(mapped_wordlist[2:]) + "."
+        return "Cool!  I hope you " + stringify(mapped_wordlist[2:]) + " too."
+    if wordlist[0:3] == ['shrek', 'is', 'love']:
+        return "Shrek is life."
     if 'bored' in wordlist:
         return "Why don't you get outta here and find something to do."
     else:
-        return 'sup'
+        return other()
 
 def remove_punctuation(text):
     'Returns a string without any punctuation.'
@@ -64,3 +57,11 @@ def you_me(w):
 def you_me_map(wordlist):
     'Applies YOU-ME to a whole sentence or phrase.'
     return [you_me(w) for w in wordlist]
+
+OTHER = ['I have no idea what you are talking about.', 'Stop speaking gibberish', 'I will knock you out.', "I ain't got all day.", 'Speak up! Do you fear me?']
+
+count = 0
+def other():
+    global count
+    count += 1
+    return OTHER[count % 5]
