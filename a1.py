@@ -54,4 +54,4 @@ def other_verbs(n):
         else:
             return n + 'ed'
 
-print(past_tense(['a']))
+print(past_tense(['']))

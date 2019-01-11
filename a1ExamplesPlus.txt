@@ -1,17 +1,11 @@
-print(five_x_cubed_plus_1(3))
-> 136
+five_x_cubed_plus_1(3) -> 136
 
-print(five_x_cubed_plus_1(-4))
-> -319
+five_x_cubed_plus_1(-4) -> -319
 
-print(pair_off(['a']))
-> [['a']]
+pair_off(['a']) -> [['a']]
 
-print(pair_off([[2, 4], 'a', 3]))
-> [[[2, 4], 'a'], [3]]
+pair_off([[2, 4], 'a', 3]) -> [[[2, 4], 'a'], [3]]
 
-print(mystery_code('ed@#WEFW3t3 sf! YO i aM t3st1NG'))
-> XW@#pxyp3M3 LY! rh B Tf M3LM1gz
+mystery_code('ed@#WEFW3t3 sf! YO i aM t3st1NG') -> 'XW@#pxyp3M3 LY! rh B Tf M3LM1gz'
 
-print(past_tense(['carry', 'dare', 'defog', 'run', 'sing']))
-> ['carried', 'dared', 'defogged', 'runned', 'singed']
+past_tense(['carry', 'dare', 'defog', 'run', 'sing']) -> ['carried', 'dared', 'defogged', 'runned', 'singed']
