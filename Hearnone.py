@@ -2,6 +2,8 @@
 # A minimal agent that can be used for basic testing of a dialog
 # with another agent, using the dialog.py program.
 
+from random import choice
+
 def introduce():
     return """I'm Hearnone, designed by S. Tanimoto.
 I don't pay much attention to what people say to me."""
@@ -16,4 +18,4 @@ def respond(the_input):
     # color = choice(['blue', 'pink', 'lavender', 'red', 'green', 'purple'])
     # food = choice(['ice-cream', 'potatoes', 'carrots', 'quiche', 'burgers'])
     # response = "Today I "+attitude+" "+color+" "+food+"."
-    return 'shrek is lov'
+    return "star"
