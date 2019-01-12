@@ -3,9 +3,9 @@
 # elsewhere as separate modules.
 
 import kuo22_agent as agentA
-import Hearnone as agentB
+import zmcnulty_agent as agentB
 
-N_TURNS = 15
+N_TURNS = 10
 
 turn = 0
 print(str(turn)+"A: "+agentA.agentName() + ': ' + agentA.introduce()+"\n")

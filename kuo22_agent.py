@@ -31,14 +31,12 @@ def respond(the_input):
     if wordlist[0:3] == ['how', 'are', 'you']:
         feeling = choice(['happy', 'sad', 'angry', 'mad', 'anxious', 'content'])
         return "I feel " + feeling + " right now."
-    if wordlist[0:2] == ['i', 'will']:
+    if wordlist[0:2] == ['i', 'will'] and len(wordlist) > 2:
         return "Interesting.  I hope you " + stringify(mapped_wordlist[2:]) + " too."
     if wordlist[0:2] == ['where', 'is']:
         return "What makes you think I know?  Go find it yourself."
     if wordlist[0:3] == ['shrek', 'is', 'love']:
         return "Shrek is life."
-    if wpred(wordlist[0]):
-        return "I am not an encyclopedia.  Stop bothering me!"
     if 'bored' in wordlist:
         return "Why don't you get outta here and find something to do."
     if 'donkey' in wordlist:
@@ -51,12 +49,16 @@ def respond(the_input):
         return "Okay, I will remember that."
     if 'swamp' in wordlist:
         return "Yes, my swamp is very beautiful."
+    if 'fear' in wordlist:
+        return "I ain't afraid of you!"
     for word in ['star', 'sing', 'song']:
         if word in wordlist:
             return sing()
     for word in ['princess', 'fiona']:
         if word in wordlist:
             return "Oh, I miss her. Things have not been the same ever since she left me."
+    if wpred(wordlist[0]):
+        return "I am not an encyclopedia.  Stop bothering me!"
     else:
         if (asked == False):
             asked = True
