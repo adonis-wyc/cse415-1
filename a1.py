@@ -53,5 +53,3 @@ def other_verbs(n):
             return n + n[-1] + 'ed'
         else:
             return n + 'ed'
-
-print(mystery_code("aopz pz hu pualylzapun lehtwsl!"))

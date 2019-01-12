@@ -1,0 +1,63 @@
+0A: Shrek: I am Shrek.
+        I am a mean green ogre. You better stop bothering me before I send you to my belly.
+        Don't try to say anything that will make me angry.
+        Kuo Hong made me.
+        If you got a problem, go bother him at kuo22@uw.edu.
+
+0B: Pete:
+        My name is Pigeonhole Pete, your friendly neighborhood mathematician.
+        I was programmed by Zachary McNulty to solve the world's most difficult problems,
+        but instead I find myself talking to you. When you inevitably bore me, contact
+        zmcnulty@uw.edu so you can bother someone else.
+        What do you want now?
+
+
+
+1A: Shrek: So are you a boy or a girl?
+
+1B: Pete: Of course I'm a boy are you blind?
+# MEMORY FEATURE: REMEMBERS THE GENDER OF THE AGENT ONCE THEY GIVE AN ANSWER
+2A: Shrek: Okay, I will remember that.
+
+2B: Pete: And I am bored already...
+
+3A: Shrek: Why don't you get outta here and find something to do.
+
+3B: Pete: Don't tell me what to do. Live your own life.
+# MEMORY FEATURE: REFERS TO THE AGENT ACCORDING TO THEIR GENDER
+# RANDOM-CHOICE FEATURE: ONLY REFERS TO THEIR GENDER SOMETIMES
+4A: Shrek: Stop speaking gibberish, little boy.
+
+4B: Pete: What about boy?
+# CYCLE FEATURE: CYCLES THROUGH A FEW MEAN COMMENTS IF NO OTHER RULES WERE TRIGGERED
+5A: Shrek: I will knock you out.
+
+5B: Pete: How are you, I guess, is what a normal person would ask
+# RANDOM-CHOICE FEATURE: RESPONDS WITH RANDOM EMOTIONAL FEELING WHEN ASKED HOW IS IS
+6A: Shrek: I feel sad right now.
+
+6B: Pete: You smell like you came straight out of a swamp.
+
+7A: Shrek: Yes, my swamp is very beautiful.
+
+7B: Pete: Is it just me or does he look like hes about to sing?
+# CYCLE FEATURE: CYCLES THROUGH THE FIRST FEW LINES OF THE ALL STAR SONG IF CERTAIN MUSIC KEYWORDS ARE MENTIONED
+8A: Shrek: Somebody once told me the world is gonna roll me
+
+8B: Pete: Shrek is love ... how did you make me say that...
+
+9A: Shrek: Shrek is life.
+
+9B: Pete: is isn't exactly my cup of tea. Have you tried topology?
+
+10A: Shrek: Stop talking about math, I don't know what you mean.
+
+10B: Pete: Oh now you have got my attention.
+
+11A: Shrek: I ain't got all day, little boy.
+
+11B: Pete: The value of this conversation is below epsilon.
+
+12A: Shrek: Stop with your nerdy nonsense! Leave today or I will cook you for dinner.
+
+12B: Pete: That reminds me that today I have to submit my paper for publication. Again.

@@ -3,7 +3,9 @@ from re import *
 
 
 def introduce():
-    return """I am Shrek the ogre.
+    return """I am Shrek.
+        I am a mean green ogre. You better stop bothering me before I send you to my belly.
+        Don't try to say anything that will make me angry.
         Kuo Hong made me.
         If you got a problem, go bother him at kuo22@uw.edu."""
 
@@ -76,7 +78,7 @@ def respond(the_input):
         if (gender == ''):
             return other() + "."
         else:
-            return other() + ", little " + gender + "."
+            return other() + choice([", little " + gender, '']) + "."
 
 def wpred(w):
     'Returns True if w is one of the question words.'
