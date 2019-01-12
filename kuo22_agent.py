@@ -37,18 +37,26 @@ def respond(the_input):
         return "What makes you think I know?  Go find it yourself."
     if wordlist[0:3] == ['shrek', 'is', 'love']:
         return "Shrek is life."
+    if wpred(wordlist[0]):
+        return "I am not an encyclopedia.  Stop bothering me!"
     if 'bored' in wordlist:
         return "Why don't you get outta here and find something to do."
     if 'donkey' in wordlist:
-        return ''
+        return "Oh, don't remind me of that guy again."
     if 'boy' in wordlist and asked == True and gender == '':
         gender = 'boy'
         return "Okay, I will remember that."
     if 'girl' in wordlist and asked == True and gender == '':
         gender = 'girl'
         return "Okay, I will remember that."
-    if 'star' in wordlist:
-        return sing()
+    if 'swamp' in wordlist:
+        return "Yes, my swamp is very beautiful."
+    for word in ['star', 'sing', 'song']:
+        if word in wordlist:
+            return sing()
+    for word in ['princess', 'fiona']:
+        if word in wordlist:
+            return "Oh, I miss her. Things have not been the same ever since she left me."
     else:
         if (asked == False):
             asked = True

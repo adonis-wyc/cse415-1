@@ -18,4 +18,4 @@ def respond(the_input):
     # color = choice(['blue', 'pink', 'lavender', 'red', 'green', 'purple'])
     # food = choice(['ice-cream', 'potatoes', 'carrots', 'quiche', 'burgers'])
     # response = "Today I "+attitude+" "+color+" "+food+"."
-    return "star"
+    return choice(['star', 'sing', 'big', 'girl', 'boy', 'princess', 'donkey', 'how are you'])
