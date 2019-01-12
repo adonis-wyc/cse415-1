@@ -54,4 +54,4 @@ def other_verbs(n):
         else:
             return n + 'ed'
 
-print(past_tense(['']))
+print(mystery_code("aopz pz hu pualylzapun lehtwsl!"))

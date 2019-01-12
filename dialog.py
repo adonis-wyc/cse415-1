@@ -5,7 +5,7 @@
 import kuo22_agent as agentA
 import zmcnulty_agent as agentB
 
-N_TURNS = 10
+N_TURNS = 12
 
 turn = 0
 print(str(turn)+"A: "+agentA.agentName() + ': ' + agentA.introduce()+"\n")

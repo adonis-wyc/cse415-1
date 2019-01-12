@@ -14,6 +14,7 @@ punctuation_pattern = compile(r"\,|\.|\?|\!|\;|\:")
 
 asked = False
 gender = ''
+math = False
 
 def respond(the_input):
     wordlist = split(' ',remove_punctuation(the_input))
@@ -23,6 +24,7 @@ def respond(the_input):
 
     global asked
     global gender
+    global math
 
     if wordlist[0] == '':
         return "Don't just stare at me.  Say something!"
@@ -57,6 +59,14 @@ def respond(the_input):
     for word in ['princess', 'fiona']:
         if word in wordlist:
             return "Oh, I miss her. Things have not been the same ever since she left me."
+    for word in ['graph', 'vertices', 'epsilon', 'topology']:
+        if word in wordlist:
+            if not math:
+                math = True
+                return "Stop talking about math, I don't know what you mean."
+            else:
+                return choice(["Stop with your nerdy nonsense! Leave today or I will cook you for dinner.", "I am really mad now!"])
+    
     if wpred(wordlist[0]):
         return "I am not an encyclopedia.  Stop bothering me!"
     else:
