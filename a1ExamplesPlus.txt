@@ -15,7 +15,7 @@ pair_off(['a']) -> [['a']]
 pair_off([[2, 4], 'a', 3]) -> [[[2, 4], 'a'], [3]]
 
 3.
-mystery_code("abc Iz th1s Secure? n0, no, 9!") -> "TUV bS MA1L lXVNKX? G0, GH, 9!"
+mystery_code("abc Iz th1s Secure? n0, no, 9!") -> 'TUV bS MA1L lXVNKX? G0, GH, 9!'
 
 mystery_code('ed@#WEFW3t3 sf! YO i aM t3st1NG') -> 'XW@#pxyp3M3 LY! rh B Tf M3LM1gz'
 

@@ -8,9 +8,12 @@ irregular = {
     'go': 'went'
 }
 
+# Returns 5 * n^3 + 1
 def five_x_cubed_plus_1(n):
     return 5 * (n ** 3) + 1
 
+# Takes a list n and returns another list containing lists each containing two consecutive elements from n.
+# Last pair only contains one element if n has odd number of elements.
 def pair_off(n):
     pairs = []
     for x in range(int (len(n) / 2)):
@@ -19,6 +22,7 @@ def pair_off(n):
         pairs.append([n[-1]])
     return pairs
 
+# Changes input string by shifting alphabets 19 places up and change its case.
 def mystery_code(n):
     output = ''
     for c in n:
@@ -37,6 +41,7 @@ def mystery_code(n):
         output += char
     return output
 
+# Takes a verb base form and returns the past tense of that verb
 def past_tense(n):
     verbs = []
     for verb in n:
