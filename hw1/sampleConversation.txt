@@ -1,3 +1,6 @@
+# Kuo Hong
+# Partner agent: Zachary McNulty
+
 0A: Shrek: I am Shrek.
         I am a mean green ogre. You better stop bothering me before I send you to my belly.
         Don't try to say anything that will make me angry.
