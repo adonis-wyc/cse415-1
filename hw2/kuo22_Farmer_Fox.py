@@ -3,7 +3,7 @@
 '''
 #<METADATA>
 SOLUZION_VERSION = "2.0"
-PROBLEM_NAME = "Missionaries and Cannibals"
+PROBLEM_NAME = "Farmer and Fox"
 PROBLEM_VERSION = "2.0"
 PROBLEM_AUTHORS = ['S. Tanimoto']
 PROBLEM_CREATION_DATE = "07-JAN-2018"
@@ -44,24 +44,22 @@ class State():
           'farmer':LEFT,
           'fox':LEFT,
           'chicken':LEFT, 
-          'grain':LEFT, 
-          'boat':LEFT 
+          'grain':LEFT
         }
     self.d = d
 
   def __eq__(self,s2):
-    for prop in ['farmer', 'fox', 'chicken', 'grain', 'boat']:
+    for prop in ['farmer', 'fox', 'chicken', 'grain']:
       if self.d[prop] != s2.d[prop]: 
         return False
     return True
 
   def __str__(self):
     # Produces a textual description of a state.
-    txt = 'Farmer: ' + SIDE[self.d['farmer']] + '\n'
+    txt = '\nFarmer: ' + SIDE[self.d['farmer']] + '\n'
     txt += 'Fox: ' + SIDE[self.d['fox']] + '\n'
     txt += 'Chicken: ' + SIDE[self.d['chicken']] + '\n'
     txt += 'Grain: ' + SIDE[self.d['grain']] + '\n'
-    txt += 'Boat: ' + SIDE[self.d['boat']] + '\n'
 
     # p = self.d['people']
     # txt = "\n M on left:"+str(p[M][LEFT])+"\n"
@@ -84,39 +82,33 @@ class State():
     news.d['fox'] = self.d['fox']
     news.d['chicken'] = self.d['chicken']
     news.d['grain'] = self.d['grain']
-    news.d['boat'] = self.d['boat']
 
     # news.d['people']=[self.d['people'][M_or_C][:] for M_or_C in [M, C]]
     # news.d['boat'] = self.d['boat']
     return news 
 
-  def can_move(self, p=None):
+  def can_move(self, p):
     side = self.d['farmer']
-    if self.d['farmer'] != self.d['boat']:
-      return False
-    if p == None:
-      if (self.d['fox'] == side and self.d['chicken']) or (self.d['chicken'] == side and self.d['grain'] == side):
+    if p == 'farmer':
+      if (self.d['fox'] == side and self.d['chicken'] == side) or (self.d['chicken'] == side and self.d['grain'] == side):
         return False
-    if p == 'fox' and self.d['chicken'] == side and self.d['grain'] == side:
+    if p == 'fox' and (self.d['fox'] != side or (self.d['chicken'] == side and self.d['grain'] == side)):
       return False
-    if p == 'grain' and self.d['fox'] == side and self.d['chicken'] == side:
+    if p == 'grain' and (self.d['grain'] != side or (self.d['fox'] == side and self.d['chicken'] == side)):
       return False 
+    if p == 'chicken' and self.d['chicken'] != side:
+      return False
     
     return True
 
 
-  def move(self,m,c):
-    '''Assuming it's legal to make the move, this computes
-     the new state resulting from moving the boat carrying
-     m missionaries and c cannibals.'''
-    news = self.copy()      # start with a deep copy.
-    side = self.d['boat']         # where is the boat?
-    p = news.d['people']          # get the array of arrays of people.
-    p[M][side] = p[M][side]-m     # Remove people from the current side.
-    p[C][side] = p[C][side]-c
-    p[M][1-side] = p[M][1-side]+m # Add them at the other side.
-    p[C][1-side] = p[C][1-side]+c
-    news.d['boat'] = 1-side       # Move the boat itself.
+  def move(self, p):
+    news = self.copy()
+    side = self.d['farmer']
+    news.d['farmer'] = 1 - side
+    if p != 'farmer':
+      news.d[p] = 1 - side
+
     return news
 
 def goal_test(s):
@@ -146,17 +138,18 @@ class Operator:
 #</COMMON_CODE>
 
 #<INITIAL_STATE>
-CREATE_INITIAL_STATE = lambda : State(d={'farmer':LEFT, 'fox':LEFT, 'chicken':LEFT, 'grain':LEFT, 'boat':LEFT })
+CREATE_INITIAL_STATE = lambda : State(d={'farmer':LEFT, 'fox':LEFT, 'chicken':LEFT, 'grain':LEFT })
 #</INITIAL_STATE>
 
 #<OPERATORS>
-MC_combinations = [(1,0),(2,0),(3,0),(1,1),(2,1)]
+combinations = ['farmer', 'fox', 'chicken', 'grain']
+# MC_combinations = [(1,0),(2,0),(3,0),(1,1),(2,1)]
 
 OPERATORS = [Operator(
-  "Cross the river with "+str(m)+" missionaries and "+str(c)+" cannibals",
-  lambda s, m1=m, c1=c: s.can_move(m1,c1),
-  lambda s, m1=m, c1=c: s.move(m1,c1) ) 
-  for (m,c) in MC_combinations]
+  "Farmer crosses river with " + p + ".",
+  lambda s, p1=p: s.can_move(p1),
+  lambda s, p1=p: s.move(p1)) 
+  for p in combinations]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)
