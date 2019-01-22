@@ -1,14 +1,10 @@
-''' ItrDFS.py
-Iterative Depth-First Search of a problem space.
- Version 0.4, January 15, 2018.
- Steve Tanimoto, Univ. of Washington.
- Paul G. Allen School of Computer Science and Engineering
+'''BFS.py
+by Kuo Hong
 
- Usage:
- python3 ItrDFS.py TowersOfHanoi
-# The numbered STEP comments in the function IterativeDFS correspond
- to the algorithm steps for iterative depth-first as presented
- in Slide 7 of the "Basic Search Algorithms" lecture.
+Assignment 2, in CSE 415, Winter 2019.
+ 
+This file contains my search algorithm for
+breadth-first search.
 '''
 
 import sys
@@ -20,11 +16,11 @@ else:
   import importlib
   Problem = importlib.import_module(sys.argv[1])
 
-print("\nWelcome to ItrDFS")
+print("\nWelcome to ItrBFS")
 COUNT = None
 BACKLINKS = {}
 
-def runDFS():
+def runBFS():
   initial_state = Problem.CREATE_INITIAL_STATE()
   print("Initial State:")
   print(initial_state)
@@ -32,11 +28,11 @@ def runDFS():
   COUNT = 0
   BACKLINKS = {}
   MAX_OPEN_LENGTH = 0
-  IterativeDFS(initial_state)
+  IterativeBFS(initial_state)
   print(str(COUNT)+" states expanded.")
   print('MAX_OPEN_LENGTH = '+str(MAX_OPEN_LENGTH))
 
-def IterativeDFS(initial_state):
+def IterativeBFS(initial_state):
   global COUNT, BACKLINKS, MAX_OPEN_LENGTH
 
 # STEP 1. Put the start state on a list OPEN
@@ -71,14 +67,15 @@ def IterativeDFS(initial_state):
         new_state = op.state_transf(S)
         if not (new_state in CLOSED):
           L.append(new_state)
-          BACKLINKS[new_state] = S
+          if (new_state not in BACKLINKS):
+            BACKLINKS[new_state] = S
 
-# STEP 5. Delete from OPEN any members of OPEN that occur on L.
+# STEP 5. Delete from L any members of L that occur on OPEN.
 #         Insert all members of L at the front of OPEN.
-    for s2 in L:
-      for i in range(len(OPEN)):
-        if (s2 == OPEN[i]):
-          del OPEN[i]; break
+    for s in OPEN:
+      for i in range(len(L)):
+        if (s == L[i]):
+          del L[i]; break
 
     OPEN = OPEN + L
     print_state_list("OPEN", OPEN)
@@ -108,4 +105,5 @@ def report(open, closed, count):
   print("COUNT = "+str(count))
 
 if __name__=='__main__':
-  runDFS()
+  runBFS()
+

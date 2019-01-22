@@ -49,13 +49,16 @@ class State():
   def __str__(self):
     # Produces a textual description of a state.
     p = self.d['people']
-    txt = "\n M on left:"+str(p[M][LEFT])+"\n"
-    txt += " C on left:"+str(p[C][LEFT])+"\n"
-    txt += "   M on right:"+str(p[M][RIGHT])+"\n"
-    txt += "   C on right:"+str(p[C][RIGHT])+"\n"
-    side='left'
-    if self.d['boat']==1: side='right'
-    txt += " boat is on the "+side+".\n"
+    txt = '['
+    txt += str(p[M][LEFT]) + ', ' + str(p[C][LEFT]) + ']'
+
+    # txt = "\n M on left:"+str(p[M][LEFT])+"\n"
+    # txt += " C on left:"+str(p[C][LEFT])+"\n"
+    # txt += "   M on right:"+str(p[M][RIGHT])+"\n"
+    # txt += "   C on right:"+str(p[C][RIGHT])+"\n"
+    # side='left'
+    # if self.d['boat']==1: side='right'
+    # txt += " boat is on the "+side+".\n"
     return txt
 
   def __hash__(self):
