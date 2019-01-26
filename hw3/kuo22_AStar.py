@@ -29,7 +29,7 @@ else:
   Problem = importlib.import_module(sys.argv[1])
 
 h = Problem.h
-print("\nWelcome to UCS")
+print("\nWelcome to A* search")
 
 COUNT = None # Number of nodes expanded.
 MAX_OPEN_LENGTH = None # How long OPEN ever gets.
@@ -124,7 +124,7 @@ def runUCS():
 def UCS(initial_state):
   '''Uniform Cost Search. This is the actual algorithm.'''
   global g, COUNT, BACKLINKS, MAX_OPEN_LENGTH, CLOSED, TOTAL_COST
-  CLOSED = []
+  CLOSED = My_Priority_Queue()
   BACKLINKS[initial_state] = None
   # The "Step" comments below help relate UCS's implementation to
   # those of Depth-First Search and Breadth-First Search.
@@ -146,7 +146,7 @@ def UCS(initial_state):
 #         If S is a goal state, output its description
     (S,P) = OPEN.delete_min()
     #print("In Step 3, returned from OPEN.delete_min with results (S,P)= ", (str(S), P))
-    CLOSED.append(S)
+    CLOSED.insert(S, P)
 
     if Problem.GOAL_TEST(S):
       print(Problem.GOAL_MESSAGE_FUNCTION(S))
@@ -169,30 +169,36 @@ def UCS(initial_state):
           continue
         edge_cost = S.edge_distance(new_state)
         h_cost = h(new_state)
-        new_g = gs + edge_cost + h_cost
+        new_f = gs + edge_cost + h_cost
+        new_g = gs + edge_cost
 
-        # If new_state already exists on OPEN:
-        #   If its new priority is less than its old priority,
-        #     update its priority on OPEN, and set its BACKLINK to S.
-        #   Else: forget out this new state object... delete it.
-        # if new_state in CLOSED:
-        #     P = CLOSED[new_state]
-        #     if new_g < P:
-
+        # If new state is already in CLOSED, check priority and
+        # delete the lower one.
+        # If new state is already in OPEN, check priority and 
+        # delete the lower one. If one in OPEN is deleted, insert
+        # new state into OPEN. 
+        # Else just insert new state into OPEN.
+        if new_state in CLOSED:
+          P = CLOSED[new_state]
+          if new_f > P:
+            del new_state
+            continue
+          if new_f <= P:
+            del CLOSED[new_state]
         if new_state in OPEN:
-            #print("new_state is in OPEN already, so...")
-            P = OPEN[new_state]
-            if new_g < P:
-                #print("New priority value is lower, so del older one")
-                del OPEN[new_state]
-                OPEN.insert(new_state, new_g)
-            else:
-                #print("Older one is better, so del new_state")
-                del new_state
-                continue
+          #print("new_state is in OPEN already, so...")
+          P = OPEN[new_state]
+          if new_f > P:
+            #print("Older one is better, so del new_state")
+            del new_state
+            continue
+          else:
+            #print("New priority value is lower, so del older one")
+            del OPEN[new_state]
+            OPEN.insert(new_state, new_f)
         else:
             #print("new_state was not on OPEN at all, so just put it on.")
-            OPEN.insert(new_state, new_g)
+            OPEN.insert(new_state, new_f)
         BACKLINKS[new_state] = S
         g[new_state] = new_g
 
