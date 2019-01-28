@@ -1,21 +1,10 @@
-''' UCS.py
-Uniform Cost Search of a problem space.
- Version 0.2, January 23, 2019.
- Steve Tanimoto, Univ. of Washington.
- Paul G. Allen School of Computer Science and Engineering
+''' kuo22_AStar.py
+By Kuo Hong
+CSE 415 Assignment 3
 
- Usage:
- python3 UCS.py FranceWithCosts
-This implementation does not reconsider a state once it has
-been put on CLOSED list.  If this implementation is extended
-to implement A*, and it is to work will all heuristics,
-including non-admissible ones, then when a state is regenerated
-that was already put on the CLOSED list, it may need reconsideration
-if the new priority value is lower than the old one.
-
-Most of the print statements have been commented out, but can be
-useful for a closer look at execution, or if preparing some
-debugging infrastructure before adding extensions, such as for A*.
+This is a modified version of AStar.py that implements an A* search
+Keeps track of cost to travel to a state and considers the heuristic
+cost to see which states get expanded first.
 '''
 
 VERBOSE = False  # Set to True to see progress; but it slows the search.
@@ -106,9 +95,9 @@ class My_Priority_Queue:
     txt += ']'
     return txt
 
-def runUCS():
+def runAStar():
   '''This is an encapsulation of some setup before running
-  UCS, plus running it and then printing some stats.'''
+  AStar, plus running it and then printing some stats.'''
   initial_state = Problem.CREATE_INITIAL_STATE()
   print("Initial State:")
   print(initial_state)
@@ -116,17 +105,17 @@ def runUCS():
   COUNT = 0
   BACKLINKS = {}
   MAX_OPEN_LENGTH = 0
-  SOLUTION_PATH = UCS(initial_state)
+  SOLUTION_PATH = AStar(initial_state)
   print(str(COUNT)+" states expanded.")
   print('MAX_OPEN_LENGTH = '+str(MAX_OPEN_LENGTH))
   #print("The CLOSED list is: ", ''.join([str(s)+' ' for s in CLOSED]))
 
-def UCS(initial_state):
+def AStar(initial_state):
   '''Uniform Cost Search. This is the actual algorithm.'''
   global g, COUNT, BACKLINKS, MAX_OPEN_LENGTH, CLOSED, TOTAL_COST
   CLOSED = My_Priority_Queue()
   BACKLINKS[initial_state] = None
-  # The "Step" comments below help relate UCS's implementation to
+  # The "Step" comments below help relate AStar's implementation to
   # those of Depth-First Search and Breadth-First Search.
 
 # STEP 1a. Put the start state on a priority queue called OPEN
@@ -169,7 +158,9 @@ def UCS(initial_state):
           continue
         edge_cost = S.edge_distance(new_state)
         h_cost = h(new_state)
+        # f cost
         new_f = gs + edge_cost + h_cost
+        # Cost to travel to current node from start
         new_g = gs + edge_cost
 
         # If new state is already in CLOSED, check priority and
@@ -228,5 +219,5 @@ def report(open, closed, count):
   print("COUNT = "+str(count))
 
 if __name__=='__main__':
-  runUCS()
+  runAStar()
 
