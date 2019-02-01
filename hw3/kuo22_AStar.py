@@ -115,8 +115,6 @@ def AStar(initial_state):
   global g, COUNT, BACKLINKS, MAX_OPEN_LENGTH, CLOSED, TOTAL_COST
   CLOSED = My_Priority_Queue()
   BACKLINKS[initial_state] = None
-  # The "Step" comments below help relate AStar's implementation to
-  # those of Depth-First Search and Breadth-First Search.
 
 # STEP 1a. Put the start state on a priority queue called OPEN
   OPEN = My_Priority_Queue()

@@ -1,3 +1,11 @@
+''' kuo22_Rubik2Cube.py
+By Kuo Hong
+CSE 415 Assignment 3
+
+This is the problem formulation for a 2x2 Rubik's Cube,
+following the format of EightPuzzle.py
+'''
+
 F = 'front'
 B = 'back'
 U = 'upper'
@@ -40,11 +48,12 @@ class State:
                     return False
         return True
     
+    # Prints out just one side for each axis
     def __str__(self):
-        txt = 'Left:\n[' + self.b[L][0] + ', ' + self.b[L][1] + '\n' + self.b[L][2] + ', ' + self.b[L][3]
-        # for i in range(1,4):
-        #     txt += ', ' + self.b[L][i]
-        return txt + ']'
+        txt = 'Left:\n[' + self.b[L][0] + ', ' + self.b[L][1] + '\n' + self.b[L][2] + ', ' + self.b[L][3] + ']\n'
+        txt += 'Upper:\n[' + self.b[U][0] + ', ' + self.b[U][1] + '\n' + self.b[U][2] + ', ' + self.b[U][3] + ']\n'
+        txt += 'Front:\n[' + self.b[F][0] + ', ' + self.b[F][1] + '\n' + self.b[F][2] + ', ' + self.b[F][3] + ']\n'
+        return txt
     
     def __hash__(self):
         return (self.__str__()).__hash__()
@@ -88,7 +97,12 @@ class State:
         return 1.0
     
 def goal_test(s):
-    return s.b == GOAL
+    for side in s.b:
+        color = s.b[side][0]
+        for i in range(1, 4):
+            if s.b[side][i] != color:
+                return False
+    return True
     
 def goal_message(s):
     return "You done it!"
@@ -112,22 +126,25 @@ class Operator:
 #                 L: ['red', 'yellow','red', 'yellow'],
 #                 R: ['white', 'orange','white', 'orange']}
 
-Z = 'blue'
+BL = 'blue'
 Y = 'yellow'
 G = 'green'
 W = 'white'
 O = 'orange'
-X = 'red'
+RD = 'red'
 
+# 3 moves away
 initial_state = {F: [O,O,O,O],
-                B: [R,R,R,R],
+                B: [RD,RD,RD,RD],
                 U: [G,G,W,W],
-                D: [Y,Y,Z,Z],
-                L: [W,Z,W,Z],
-                R: [G,Y,G,Y]}
+                D: [RD,RD,BL,BL],
+                L: [W,BL,W,BL],
+                R: [G,RD,G,RD]}
+
+
 CREATE_INITIAL_STATE = lambda: State(initial_state)
 
-directions = [F, B, U, D, L, R]
+directions = [F,B,L,R,U,D]
 OPERATORS = [Operator("Rotate " +str(dir)+ " clockwise",
                 lambda s,dir1=dir: s.can_move(dir1),
                 lambda s,dir1=dir: s.move(dir1) )
