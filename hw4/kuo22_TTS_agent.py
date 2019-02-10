@@ -1,9 +1,20 @@
+'''kuo22_TTS_agent.py
+By Kuo Hong
+CSE 415 Assignment 4
+
+This is a minimax search implementation for Toro-Tile Straight.
+Includes toggleable modes such as alpha-beta pruning and time limit.
+'''
+
+# I have implemented option A
+
 from TTS_State import TTS_State
 import time
 
 USE_CUSTOM_STATIC_EVAL_FUNCTION = True
-USE_DEFAULT_ORDER = False
+USE_DEFAULT_ORDER = True
 
+# Default setup
 k = 3
 my_side = 'B'
 
@@ -15,18 +26,21 @@ opponent = {
             }
 
 class MY_TTS_State(TTS_State):
+    # Static evaluation.
     def static_eval(self):
         if USE_CUSTOM_STATIC_EVAL_FUNCTION:
             return self.custom_static_eval(WHITE) - self.custom_static_eval(BLACK)
         else :
             return self.basic_static_eval(WHITE) - self.basic_static_eval(BLACK)
 
+    # The order moves are generated.
     def get_moves(self, color):
         if USE_DEFAULT_ORDER: 
             return self.basic_moves(color)
         else:
             return self.custom_moves(color)
 
+    # A basic static evaluation that values lines of length k with 2 of the same give color and not blocked by forbidden tile or another color.
     def basic_static_eval(self, color):
         global k
         value = 0
@@ -49,7 +63,6 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == 2:
                     value += 1
-        # print('horizontal ' + str(value))
 
         # Check all vertical lines
         for i in range(x):
@@ -67,8 +80,6 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == 2:
                     value += 1
-        
-        # print('vertical ' + str(value))
 
         # Check for diagonals going down-right
         for i in range(y):
@@ -87,7 +98,6 @@ class MY_TTS_State(TTS_State):
                 if pieces == 2:
                     value += 1
 
-        # print('down-right ' + str(value))
         # Check for diagonals going down-left
         for i in range(y):
             for j in range(x):
@@ -104,9 +114,10 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == 2:
                     value += 1
-        # print('down-left ' + str(value))
+
         return value
 
+    # Similar to basic evaluation, but puts more weight on lines with higher number of the given color tiles rather than just 2.
     def custom_static_eval(self, color):
         global k
         value = 0
@@ -129,9 +140,10 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == k:
                     value += 1000000
+                if pieces == k - 1:
+                    value += 10000
                 if pieces > 0:
                     value += 2 ** pieces
-        # print('horizontal ' + str(value))
 
         # Check all vertical lines
         for i in range(x):
@@ -149,10 +161,10 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == k:
                     value += 1000000
+                if pieces == k - 1:
+                    value += 10000
                 if pieces > 0:
                     value += 2 ** pieces
-        
-        # print('vertical ' + str(value))
 
         # Check for diagonals going down-right
         for i in range(y):
@@ -170,10 +182,11 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == k:
                     value += 1000000
+                if pieces == k - 1:
+                    value += 10000
                 if pieces > 0:
                     value += 2 ** pieces
 
-        # print('down-right ' + str(value))
         # Check for diagonals going down-left
         for i in range(y):
             for j in range(x):
@@ -190,9 +203,11 @@ class MY_TTS_State(TTS_State):
                     continue
                 if pieces == k:
                     value += 1000000
+                if pieces == k - 1:
+                    value += 10000
                 if pieces > 0:
                     value += 2 ** pieces
-        # print('down-left ' + str(value))
+
         return value
     
     # Left to right, top to bottom
@@ -226,7 +241,7 @@ class MY_TTS_State(TTS_State):
 
 
 
-
+# Set up necessary variables
 def get_ready(initial_state, _k, what_side_i_play, opponent_moniker):
     global k, my_side
     k = _k
@@ -248,7 +263,7 @@ def take_turn(current_state, opponents_utterance, time_limit = 10):
     time_lim = time_limit
     new_state = MY_TTS_State(current_state.board)
 
-    # Utterances
+    # Utterances to cycle
     utterance = ["You are not good enough to beat me!",
                 "I better not see you in this swamp again if you lose.",
                 "Your moves are too easy to read.",
@@ -260,6 +275,7 @@ def take_turn(current_state, opponents_utterance, time_limit = 10):
                 "This move should get you!",
                 "Don't you think I don't know how to play this game just because of my look!",
                 "Hah! You call that a move? I will show you a move."]
+    
     # Fix up whose turn it will be.
     who = current_state.whose_turn
     new_who = 'B'  
@@ -336,16 +352,15 @@ def best_move(current_depth, max_ply, current_state, color, alpha, beta):
 
     return optimal_state
 
-
-eval_value = 0
+# Relevant variables to keep track of
 states_expanded = 0
 states_evaluated = 0
 maximum_depth = 0
 num_cutoff = 0
 start_time = 0
 time_lim =  False
-optimal_value = 0
 
+# A takes a state to return the most optimal state given the maximum ply, time limit, whether to use default move ordering or static evaluation function.
 def parameterized_minimax(
        current_state=None,
        use_iterative_deepening_and_time = False,
@@ -355,7 +370,7 @@ def parameterized_minimax(
        time_limit=1.0,
        use_custom_static_eval_function=False):
 
-    global USE_CUSTOM_STATIC_EVAL_FUNCTION, USE_DEFAULT_ORDER, eval_value, states_expanded, states_evaluated, maximum_depth, num_cutoff, start_time, time_lim, optimal_value
+    global USE_CUSTOM_STATIC_EVAL_FUNCTION, USE_DEFAULT_ORDER, states_expanded, states_evaluated, maximum_depth, num_cutoff, start_time, time_lim
 
     start_time = time.perf_counter()
     time_lim = time_limit
@@ -387,18 +402,18 @@ def parameterized_minimax(
         else:
             best_state = minimax_search(0, max_ply, new_state, my_side)
     eval_value = best_state.static_eval()
-    print(str(best_state))
+    # print(str(best_state))
     end_time = time.perf_counter()
-    print("time: " + str(end_time - start_time))
+    # print("time: " + str(end_time - start_time))
     return [eval_value, states_expanded, states_evaluated, maximum_depth, num_cutoff]
 
+# Basic minimax search, finds the most optimal play based on state evaluation after certain plies
 def minimax_search(current_depth, max_ply, current_state, color):
-    global eval_value, states_expanded, states_evaluated, maximum_depth, num_cutoff
+    global states_expanded, states_evaluated, maximum_depth, num_cutoff
 
     if current_depth > maximum_depth:
         maximum_depth = current_depth
 
-    # new_state = MY_TTS_State(current_state.board)
     moves = current_state.get_moves(color)
     if not moves or current_depth == max_ply:
         states_evaluated += 1
@@ -421,9 +436,11 @@ def minimax_search(current_depth, max_ply, current_state, color):
             optimal_value = move_value
     return optimal_state
 
+# Basic minimax search with time constraint
 def timed_minimax_search(current_depth, max_ply, current_state, color):
-    global eval_value, states_expanded, states_evaluated, maximum_depth, num_cutoff, start_time, time_lim
+    global states_expanded, states_evaluated, maximum_depth, num_cutoff, start_time, time_lim
 
+    # Get out of recursion if at least 90% to time limit
     current_time = time.perf_counter()
     if current_time - start_time > time_lim * 0.9:
         return current_state
@@ -486,9 +503,11 @@ def minimax_pruning(current_depth, max_ply, current_state, color, alpha, beta):
 
     return optimal_state
 
+# Alpha-beta pruning but checks time to make sure recursion doesn't go above time limit
 def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, beta):
     global states_expanded, states_evaluated, maximum_depth, num_cutoff, time, start_time, time_lim
 
+    # Get out of recursion if at least 90% to time limit
     current_time = time.perf_counter()
     if current_time - start_time > time_lim * 0.9:
         return current_state
@@ -522,6 +541,8 @@ def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, b
 
     return optimal_state
 
+# TESTABLE BOARDS
+
 # INITIAL_BOARD = \
 #                 [[' ',' ',' ',' '],
 #                 [' ','B',' ',' '],
@@ -551,7 +572,5 @@ def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, b
 
 # init_state = TTS_State(INITIAL_BOARD)
 # new_state = MY_TTS_State(init_state.board)
-
-# # print(new_state.static_eval())
-# result = parameterized_minimax(current_state = new_state, use_iterative_deepening_and_time = False, use_default_move_ordering = False, max_ply = 4, alpha_beta=True, use_custom_static_eval_function=False, time_limit=5)
+# result = parameterized_minimax(current_state = new_state, use_iterative_deepening_and_time = False, use_default_move_ordering = True, max_ply = 5, alpha_beta=True, use_custom_static_eval_function=False, time_limit=5)
 # print(str(result))
