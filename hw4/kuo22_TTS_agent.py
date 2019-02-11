@@ -12,7 +12,7 @@ from TTS_State import TTS_State
 import time
 
 USE_CUSTOM_STATIC_EVAL_FUNCTION = True
-USE_DEFAULT_ORDER = True
+USE_DEFAULT_ORDER = False
 
 # Default setup
 k = 3
@@ -250,7 +250,9 @@ def get_ready(initial_state, _k, what_side_i_play, opponent_moniker):
 
 def who_am_i():
     return """I am Shrek, the most intelligent being in the swamp.  I am created
-by Kuo (UW ID: kuo22), and I will beat you while throwing insults at you."""
+by Kuo (UW ID: kuo22), and I will beat you while throwing insults at you.
+I have lived here for the past 18 years, while you were still a baby.  Don't ever
+think you can beat me at this game!"""
 
 def moniker():
     return 'Shrek'
@@ -285,7 +287,7 @@ def take_turn(current_state, opponents_utterance, time_limit = 10):
     last_best = None
 
     current_max_ply = 1
-    while current_max_ply <= 4:
+    while current_max_ply <= 20:
         last_best = best_state
         best_state = best_move(0, current_max_ply, new_state, my_side, float("-inf"), float("inf"))
         current_max_ply += 1
@@ -374,19 +376,41 @@ def parameterized_minimax(
 
     start_time = time.perf_counter()
     time_lim = time_limit
+    states_expanded = 0
+    states_evaluated = 0
+    maximum_depth = 0
+    num_cutoff = 0
     USE_CUSTOM_STATIC_EVAL_FUNCTION = use_custom_static_eval_function
     USE_DEFAULT_ORDER = use_default_move_ordering
     new_state = MY_TTS_State(current_state.board)
+
     best_state = None
+    prev_best_state = None
+    prev_states_expanded = 0
+    prev_states_evaluated = 0
+    prev_maximum_depth = 0
+    prev_num_cutoff = 0
 
     if alpha_beta:
         if use_iterative_deepening_and_time:
             current_max_ply = 1
             while current_max_ply <= max_ply:
+                prev_best_state = best_state
+                prev_states_expanded = states_expanded
+                prev_states_evaluated = states_evaluated
+                prev_maximum_depth = maximum_depth
+                prev_num_cutoff = num_cutoff
+
                 best_state = timed_minimax_pruning(0, current_max_ply, new_state, my_side, float("-inf"), float("inf"))
                 current_max_ply += 1
                 end_time = time.perf_counter()
+                # If out of time, use the data from previous iteration.
                 if end_time - start_time > time_limit * 0.9:
+                    best_state = prev_best_state
+                    states_expanded = prev_states_expanded
+                    states_evaluated = prev_states_evaluated
+                    maximum_depth = prev_maximum_depth
+                    num_cutoff = prev_num_cutoff
                     break
         else:
             best_state = minimax_pruning(0, max_ply, new_state, my_side, float("-inf"), float("inf"))
@@ -394,16 +418,26 @@ def parameterized_minimax(
         if use_iterative_deepening_and_time:
             current_max_ply = 1
             while current_max_ply <= max_ply:
+                prev_best_state = best_state
+                prev_states_expanded = states_expanded
+                prev_states_evaluated = states_evaluated
+                prev_maximum_depth = maximum_depth
+
                 best_state = timed_minimax_search(0, current_max_ply, new_state, my_side)
                 current_max_ply += 1
                 end_time = time.perf_counter()
+                # If out of time, use data from previous iteration.
                 if end_time - start_time > time_limit * 0.9:
+                    best_state = prev_best_state
+                    states_expanded = prev_states_expanded
+                    states_evaluated = prev_states_evaluated
+                    maximum_depth = prev_maximum_depth
                     break   
         else:
             best_state = minimax_search(0, max_ply, new_state, my_side)
     eval_value = best_state.static_eval()
     # print(str(best_state))
-    end_time = time.perf_counter()
+    # end_time = time.perf_counter()
     # print("time: " + str(end_time - start_time))
     return [eval_value, states_expanded, states_evaluated, maximum_depth, num_cutoff]
 
@@ -523,7 +557,7 @@ def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, b
     states_expanded += 1
     optimal_state = current_state
     for move in moves:
-        state = minimax_pruning(current_depth + 1, max_ply, move, opponent[color], alpha, beta)
+        state = timed_minimax_pruning(current_depth + 1, max_ply, move, opponent[color], alpha, beta)
         move_value = state.static_eval()
         if color == WHITE:
             if move_value > alpha:
@@ -572,5 +606,5 @@ def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, b
 
 # init_state = TTS_State(INITIAL_BOARD)
 # new_state = MY_TTS_State(init_state.board)
-# result = parameterized_minimax(current_state = new_state, use_iterative_deepening_and_time = False, use_default_move_ordering = True, max_ply = 5, alpha_beta=True, use_custom_static_eval_function=False, time_limit=5)
+# result = parameterized_minimax(current_state = new_state, use_iterative_deepening_and_time = True, use_default_move_ordering = True, max_ply = 5, alpha_beta=False, use_custom_static_eval_function=False, time_limit=10)
 # print(str(result))
