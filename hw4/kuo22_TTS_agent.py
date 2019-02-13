@@ -604,7 +604,26 @@ def timed_minimax_pruning(current_depth, max_ply, current_state, color, alpha, b
 #                 ['B',' ','B','B',' ',' ','W',' '],
 #                 [' ',' ',' ',' ','-',' ',' ',' ']]
 
-# init_state = TTS_State(INITIAL_BOARD)
-# new_state = MY_TTS_State(init_state.board)
+INITIAL_BOARD = \
+               [['-','W','B','-','W','B','-'],
+                ['W','B',' ',' ',' ',' ',' '],
+                [' ',' ',' ',' ',' ',' ',' '],
+                ['-',' ','B','-',' ','B','-'],
+                [' ',' ',' ',' ',' ',' ',' '],
+                [' ','W',' ',' ','W',' ',' '],
+                ['-',' ',' ','-',' ',' ','-']]
+
+init_state = TTS_State(INITIAL_BOARD)
+new_state = MY_TTS_State(init_state.board)
 # result = parameterized_minimax(current_state = new_state, use_iterative_deepening_and_time = True, use_default_move_ordering = True, max_ply = 5, alpha_beta=False, use_custom_static_eval_function=False, time_limit=10)
 # print(str(result))
+get_ready('hi', 5, 'B', 'lol')
+result = parameterized_minimax(current_state=new_state,
+                               use_iterative_deepening_and_time=False,
+                               max_ply=2,
+                               use_default_move_ordering=True,
+                               alpha_beta=True,
+                               time_limit=20.0,
+                               use_custom_static_eval_function=False)
+
+print(str(result))
