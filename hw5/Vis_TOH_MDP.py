@@ -207,6 +207,7 @@ def create_TK_Canvas():
 
 # display the menu
   root.config(menu=menubar)
+  # root.mainloop()
   #print("VIS initialization finished")
 
 def init_menu_settings():
