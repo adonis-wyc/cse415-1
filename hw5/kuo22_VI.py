@@ -22,22 +22,24 @@ def one_step_of_VI(S, A, T, R, gamma, Vk):
    global Vkplus1, Q_Values_Dict
    Vkplus1 = {}
    Q_Values_Dict = {}
-   # For each 
+   # For each (s, a, sp) combination, add its Q value to the Q Dictionary.
    for s in S:
       for a in A:
          for sp in S:
-            partial_Q = T(s, a, sp) * (R(s, a, sp) + gamma * Vk(sp))
+            partial_Q = T(s, a, sp) * (R(s, a, sp) + gamma * Vk[sp])
             if (s, a) not in Q_Values_Dict:
                Q_Values_Dict[(s, a)] = partial_Q
             else:
                Q_Values_Dict[(s, a)] += partial_Q
    
+   # Check all Q States and update Vkplus1 for that state whenever the Q value is greater.
    for (s, a) in Q_Values_Dict:
       if s not in Vkplus1:
          Vkplus1[s] = Q_Values_Dict[(s, a)]
       elif Q_Values_Dict[(s, a)] > Vkplus1[s]:
          Vkplus1[s] = Q_Values_Dict[(s, a)]
    
+   # Check Vkplus1 against the given Vk and find the delta max value.
    delta_max = 0
    for s in Vkplus1:
       if abs(Vkplus1[s] - Vk[s]) > delta_max:
@@ -84,17 +86,24 @@ def extract_policy(S, A):
    '''
    global Policy
    Q_values = return_Q_values(S, A)
+   Q_max = {}
    Policy = {}
    # Add code here
-   for (s, a) in Q_values:
+   for s, a in Q_values:
       if s not in Policy:
          Policy[s] = a 
-      elif 
+         Q_max[s] = Q_values[(s, a)]
+      elif Q_values[(s, a)] > Q_max[s]:
+         Policy[s] = a
+         Q_max[s] = Q_values[(s, a)]
+
    return Policy
 
 def apply_policy(s):
    '''Return the action that your current best policy implies for state s.'''
    global Policy
-   return None # placeholder
+   return Policy[s]
+
+   # return None # placeholder
 
 

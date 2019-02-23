@@ -707,8 +707,7 @@ def set_up_state_space():
   else: SILVER_PATH = []
   Vis.basic_plot(STATES_AND_EDGES, N_disks, MDP_command, NGOALS,\
                  GOLDEN_PATH, SILVER_PATH)
-#  Vis.display_stats('''There are no episodes or transitions yet,
-#and epsilon = 0''')
+  Vis.display_stats('''There are no episodes or transitions yet,and epsilon = 0''')
   Vis.TOH_state_vis(Agent_state)
   Vis.enable_value_iteration(False)
   Vis.enable_policy_extraction(False)

@@ -13,7 +13,7 @@ This is part of the UW Intro to AI Starter Code for Reinforcement Learning.
 # Edit the returned name to ensure you get credit for the assignment.
 def student_name():
 #*** ADD OR CHANGE CODE HERE ***
-   return "Your Lastname, Firstname" # For an autograder.
+   return "Kuo Hong" # For an autograder.
 
 STATES=None; ACTIONS=None; UQV_callback=None; Q_VALUES=None
 is_valid_goal_state=None; Terminal_state = None
