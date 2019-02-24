@@ -1,12 +1,11 @@
 '''kuo22_VI.py
-(rename this file using your own UWNetID.)
 
 Value Iteration for Markov Decision Processes.
 '''
 
 # Edit the returned name to ensure you get credit for the assignment.
 def student_name():
-   return "Your Lastname, Firstname" # For an autograder.
+   return "Kuo Hong" # For an autograder.
 
 Vkplus1 = {}
 Q_Values_Dict = {}
@@ -69,12 +68,13 @@ def return_Q_values(S, A):
    create the answer dictionary, and use 0.0 for all the values.
    '''
    global Q_Values_Dict
+   # If no Q values not set, set them to 0 using the given S and A
    if not Q_Values_Dict:
       for s in S:
          for a in A:
             Q_Values_Dict[(s, a)] = 0.0
    
-   return Q_Values_Dict # placeholder
+   return Q_Values_Dict
 
 Policy = {}
 def extract_policy(S, A):
@@ -88,7 +88,7 @@ def extract_policy(S, A):
    Q_values = return_Q_values(S, A)
    Q_max = {}
    Policy = {}
-   # Add code here
+   # Find the action with the highest value in the Q value dictionary
    for s, a in Q_values:
       if s not in Policy:
          Policy[s] = a 
